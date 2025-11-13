@@ -276,7 +276,7 @@ export default function GraphComp() {
                     Select Start {start && `(${start.i}, ${start.j})`}
                 </button>
                 <button onClick={() => { setStatus("select_end") }} disabled={grid.length === 0 || status === "select_end"} >
-                    Select Start {end && `(${end.i}, ${end.j})`}
+                    Select End {end && `(${end.i}, ${end.j})`}
                 </button>
             </div>
 

@@ -1,0 +1,9 @@
+.num_input::-webkit-inner-spin-button,
+.num-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.num_input {
+  -moz-appearance: textfield;
+}

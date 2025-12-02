@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type ChangeEvent } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from "react"
 import style from "./style.module.css"
 import { extractData, retractData } from "./utils/extractData"
 import { solvePuzzle, type PuzzleResultType } from "./utils/solvePuzzle"
@@ -51,6 +51,16 @@ export default function NumberPuzzleSolver() {
         })
     }, [grid])
 
+    const removeCol = useCallback(() => {
+        setGrid(prev => {
+            const newGrid = [...prev];
+            for (let i = 0; i < newGrid.length; i++) {
+                newGrid[i].pop()
+            }
+            return newGrid
+        })
+    }, [grid])
+
     const addRow = useCallback(() => {
         setGrid(prev => {
             const newGrid = [...prev];
@@ -59,6 +69,14 @@ export default function NumberPuzzleSolver() {
                 arr.push(0)
             }
             newGrid.push(arr)
+            return newGrid
+        })
+    }, [grid])
+
+    const removeRow = useCallback(() => {
+        setGrid(prev => {
+            const newGrid = [...prev];
+            newGrid.pop()
             return newGrid
         })
     }, [grid])
@@ -87,7 +105,7 @@ export default function NumberPuzzleSolver() {
 
     useEffect(() => {
 
-        if (grid.length < activeCell[0] || grid[0].length < activeCell[1]) {
+        if (grid.length <= activeCell[0] || grid[0].length <= activeCell[1]) {
             setActiveCell(() => {
                 return [
                     Math.min(activeCell[0], grid.length - 1),
@@ -129,13 +147,15 @@ export default function NumberPuzzleSolver() {
         return () => {
             window.removeEventListener("keydown", keyboardEventHandler)
         }
-    }, [focused])
+    }, [focused, activeCell])
 
     return (
         <div tabIndex={0} onFocus={() => { setFocused(true) }} onBlur={() => { setFocused(false) }} >
             <div style={{ display: "flex", flexDirection: "row", gap: "10px", marginBottom: "10px" }} >
                 <NormalButton onClick={addCol} >Add Column</NormalButton>
+                <NormalButton onClick={removeCol} disabled={grid[0].length <= 1} >Remove Column</NormalButton>
                 <NormalButton onClick={addRow} >Add Row</NormalButton>
+                <NormalButton onClick={removeRow} disabled={grid.length <= 1} >Remove Row</NormalButton>
                 {isCompleted &&
                     <NormalButton onClick={solveGrid} >Solve</NormalButton>
                 }
@@ -151,9 +171,9 @@ export default function NumberPuzzleSolver() {
                                     const isActive = activeCell[0] === i && activeCell[1] === j
                                     const isInResult = `${i}-${j}` in resultObj
                                     return (
-                                        <td key={`${i}-${j}`} >
+                                        <td key={`${i}-${j}`} onClick={() => { setActiveCell([i, j]) }} >
                                             <div style={{ width: "20px", height: "20px", textAlign: "center", overflow: "hidden", border: "1px solid black", background: isInResult ? "green" : isActive ? "yellow" : i === 0 || j === 0 ? "rgba(0,0,0,0.2)" : "#FFF" }} >
-                                                {isActive && focused && !isInResult && (i > 0 || j > 0) ? <NormalInput id={`num-input`} className={style["num_input"]} defaultValue={n} type="number" min={0} autoFocus onChange={inputChange} style={{ width: "100%", height: "100%", padding: "0px", borderRadius: 0 }} /> :
+                                                {isActive && focused && !isInResult && (i > 0 || j > 0) ? <NormalInput id={`num-input`} className={style["num_input"]} autoFocus defaultValue={n} type="number" min={0} onChange={inputChange} style={{ width: "100%", height: "100%", padding: "0px", borderRadius: 0 }} /> :
                                                     n !== 0 ? n : ""
                                                 }
                                             </div>

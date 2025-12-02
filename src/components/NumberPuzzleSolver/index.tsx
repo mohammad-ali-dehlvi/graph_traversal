@@ -3,6 +3,7 @@ import style from "./style.module.css"
 import { extractData, retractData } from "./utils/extractData"
 import { solvePuzzle, type PuzzleResultType } from "./utils/solvePuzzle"
 import NormalButton from "../UI/Button"
+import NormalInput from "../UI/Input"
 
 export default function NumberPuzzleSolver() {
     // const [grid, setGrid] = useState<number[][]>(JSON.parse(localStorage.getItem("num_puzzle_grid")!))
@@ -152,7 +153,7 @@ export default function NumberPuzzleSolver() {
                                     return (
                                         <td key={`${i}-${j}`} >
                                             <div style={{ width: "20px", height: "20px", textAlign: "center", overflow: "hidden", border: "1px solid black", background: isInResult ? "green" : isActive ? "yellow" : i === 0 || j === 0 ? "rgba(0,0,0,0.2)" : "#FFF" }} >
-                                                {isActive && focused && (i > 0 || j > 0) ? <input id={`num-input`} className={style["num_input"]} defaultValue={n} type="number" min={0} autoFocus onChange={inputChange} style={{ width: "100%", height: "100%" }} /> :
+                                                {isActive && focused && !isInResult && (i > 0 || j > 0) ? <NormalInput id={`num-input`} className={style["num_input"]} defaultValue={n} type="number" min={0} autoFocus onChange={inputChange} style={{ width: "100%", height: "100%", padding: "0px", borderRadius: 0 }} /> :
                                                     n !== 0 ? n : ""
                                                 }
                                             </div>

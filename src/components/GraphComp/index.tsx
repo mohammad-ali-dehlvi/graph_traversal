@@ -2,6 +2,8 @@ import { useCallback, useState, useRef, useEffect, type FormEvent, type MouseEve
 import { bfs } from "./utils/bfs";
 import { getId } from "./utils/functions";
 import Canvas, { type CanvasRefInterface } from "../Canvas";
+import NormalButton from "../UI/Button";
+import NormalInput from "../UI/Input";
 
 const CELL_SIZE = 8; // Smaller cells for better performance
 
@@ -254,30 +256,30 @@ export default function GraphComp() {
     return (
         <div style={{ width: "100%" }}>
             <form onSubmit={handleFormSubmit}>
-                <input name="rows" type="number" min={0} defaultValue={50} required />
-                <input name="cols" type="number" min={0} defaultValue={50} required />
-                <button type="submit">Generate Grid</button>
+                <NormalInput name="rows" type="number" min={0} defaultValue={50} required />
+                <NormalInput name="cols" type="number" min={0} defaultValue={50} required />
+                <NormalButton type="submit">Generate Grid</NormalButton>
             </form>
 
             <div style={{ margin: "10px 0", display: "flex", gap: "10px", flexDirection: "row" }}>
-                <button
+                <NormalButton
                     onClick={solveUsingBfs}
                     disabled={grid.length === 0 || isAnimating}
                 >
                     {isAnimating ? "Solving..." : "Solve with BFS"}
-                </button>
-                <button
+                </NormalButton>
+                <NormalButton
                     onClick={resetGridColors}
                     disabled={grid.length === 0}
                 >
                     Reset Colors
-                </button>
-                <button onClick={() => { setStatus("select_start") }} disabled={grid.length === 0 || status === "select_start"} >
+                </NormalButton>
+                <NormalButton onClick={() => { setStatus("select_start") }} disabled={grid.length === 0 || status === "select_start"} >
                     Select Start {start && `(${start.i}, ${start.j})`}
-                </button>
-                <button onClick={() => { setStatus("select_end") }} disabled={grid.length === 0 || status === "select_end"} >
+                </NormalButton>
+                <NormalButton onClick={() => { setStatus("select_end") }} disabled={grid.length === 0 || status === "select_end"} >
                     Select End {end && `(${end.i}, ${end.j})`}
-                </button>
+                </NormalButton>
             </div>
 
             <div style={{ position: "relative", display: "inline-block" }} >

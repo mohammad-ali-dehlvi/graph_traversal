@@ -5,7 +5,7 @@ import { solvePuzzle, type PuzzleResultType } from "./utils/solvePuzzle"
 import NormalButton from "../UI/Button"
 
 export default function NumberPuzzleSolver() {
-    // const [grid, setGrid] = useState([[0]])
+    // const [grid, setGrid] = useState<number[][]>(JSON.parse(localStorage.getItem("num_puzzle_grid")!))
     const [grid, setGrid] = useState<number[][]>([[0]])
     const [result, setResult] = useState<PuzzleResultType[]>([])
     const [activeCell, setActiveCell] = useState([0, 0])

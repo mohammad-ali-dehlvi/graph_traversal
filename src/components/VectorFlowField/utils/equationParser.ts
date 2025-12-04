@@ -1,5 +1,5 @@
 type VariableName = 'x' | 'y' | 'z';
-type MathFunction = (x: number, y?: number, z?: number) => number;
+export type MathFunction = (x: number, y?: number, z?: number) => number;
 
 export class EquationParser {
     private variables: VariableName[];
@@ -115,7 +115,7 @@ export class EquationParser {
         }
 
         // Validate characters (allow only valid math characters and variables)
-        const validPattern = /^[xyz\d+\-*/^().,Math\s]+$/;
+        const validPattern = /^[xyz\d+\-*/^().,MathPIE\s]+$/;
         if (!validPattern.test(equation.replace(/Math\.\w+\(/g, ''))) {
             throw new Error('Equation contains invalid characters');
         }

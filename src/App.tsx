@@ -9,8 +9,8 @@ function App() {
 
   return (
     <>
-      {/* <GraphComp />
-      <NumberPuzzleSolver /> */}
+      <GraphComp />
+      <NumberPuzzleSolver />
       <VectorFlowField />
     </>
   )

@@ -17,11 +17,12 @@ interface CanvasPropsInterface {
     otherCanvasProps?: DetailedHTMLProps<CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>;
     canvasProps?: DetailedHTMLProps<CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>;
     defaultLayers?: string[]
+    autoDimensions?: boolean
     onLayerUpdate?: (obj: { layerIds: Set<string>, allCanvas: Map<string, HTMLCanvasElement> }) => void
 }
 
 const Canvas = forwardRef<CanvasRefInterface, CanvasPropsInterface>((props, ref) => {
-    const { defaultLayers = [], rootStyle = {}, mainCanvasProps = {}, otherCanvasProps = {}, canvasProps = {}, onLayerUpdate } = props
+    const { defaultLayers = [], rootStyle = {}, mainCanvasProps = {}, otherCanvasProps = {}, canvasProps = {}, autoDimensions = false, onLayerUpdate } = props
     const [layerIds, setLayerIds] = useState(new Set(["main", ...defaultLayers]))
     const canvasRefs = useRef<Map<string, HTMLCanvasElement>>(new Map())
 
@@ -77,6 +78,18 @@ const Canvas = forwardRef<CanvasRefInterface, CanvasPropsInterface>((props, ref)
         }
     }, [layerIds])
 
+    useEffect(() => {
+        if (autoDimensions) {
+            layerIds.forEach((key) => {
+                const canvas = canvasRefs.current.get(key)
+                if (canvas) {
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
+                }
+            })
+        }
+    }, [autoDimensions, layerIds])
+
     return (
         <div style={{ ...rootStyle, position: "relative", display: "inline-block" }} >
             {layerIdsArr.map((id, i) => {
@@ -97,6 +110,7 @@ const Canvas = forwardRef<CanvasRefInterface, CanvasPropsInterface>((props, ref)
                                 position: "absolute",
                                 inset: 0
                             }),
+                            ...(autoDimensions ? { width: "100%", height: "100%" } : {}),
                             zIndex: i + 1
                         }}
                     />
